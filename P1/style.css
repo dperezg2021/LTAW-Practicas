@@ -8,8 +8,8 @@
         background-color: #4b1e1e;
     }
     header {
-        background-color: #333;
-        color: white;
+        background-color: rgba(228, 228, 224, 1);
+        color: rgb(0, 0, 0);
         padding: 1rem;
     }
     .productos {
@@ -29,6 +29,34 @@
         max-width: 100%;
         border-radius: 5px;
     }
+    .detalle-vinilo {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 20px;
+    }
+    .detalle-vinilo img {
+        max-width: 300px;
+        border-radius: 5px;
+    }
+    .detalle-info {
+        flex: 1;
+        color: white;
+        font-family: 'Raleway', sans-serif;
+        background-color: #333;
+        padding: 0px;
+        border-radius: 3px;
+    }
+    .detalle-info ul {
+        list-style-type: none; /* Elimina los puntos */
+        padding-left: 0; /* Elimina el padding por defecto */
+    }
+
+    .detalle-info ul li {
+        display: block; /* Asegura que cada elemento esté en una línea nueva */
+        margin-bottom: 5px; /* Espacio entre canciones (opcional) */
+    }
+
     footer {
         margin-top: 20px;
         padding: 10px;
