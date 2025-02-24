@@ -88,21 +88,12 @@ header .carrito {
     text-decoration: underline;
 }
 .empty-cart-icon {
-    width: 140px;
-    height: 140px;
+    width: 240px;
+    height: 240px;
     margin-bottom: 1rem;
     opacity: 0.8;
 }
-.btn {
-    background-color: #221919;
-    color: #fff;
-    padding: 0.8rem 1.5rem;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
+
 footer {
     margin-top: 20px;
     padding: 10px;
@@ -132,4 +123,39 @@ footer {
     background-color: #a00000;
     transform: scale(0.95);
 }
+/* Estilos solo para la página de carrito vacío */
+.empty-cart {
+    text-align: center;
+    padding: 2rem;
+    color: white;
+}
+
+.empty-cart p {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.empty-cart-icon {
+    width: 240px;
+    height: 240px;
+    margin-bottom: 1rem;
+    opacity: 0.8;
+}
+
+.empty-cart .btn {
+    background-color: #221919;
+    color: #fff;
+    padding: 0.6rem 2.5rem;
+    border: none;
+    border-radius: 3px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.empty-cart .btn:hover {
+    background-color: #3a2a2a;
+}
+
 
