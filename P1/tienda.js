@@ -27,7 +27,7 @@ const server = http.createServer((req, res) => {
             if (err.code === 'ENOENT') {
                 fs.readFile(path.join(PUBLIC_DIR, '404.html'), (err404, data404) => {
                     res.writeHead(404, { 'Content-Type': 'text/html' });
-                    res.end(err404 ? 'Página no encontrada' : data404);
+                    res.end(err404 ? 'Pagina no encontrada' : data404);
                 });
             } else {
                 res.writeHead(500, { 'Content-Type': 'text/plain' });
