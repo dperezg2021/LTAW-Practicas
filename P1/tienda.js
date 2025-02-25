@@ -2,7 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const PORT = 8080;
+const PORT = 8001;
 const PUBLIC_DIR = __dirname;
 
 const mimeTypes = {
@@ -53,15 +53,25 @@ const server = http.createServer((req, res) => {
         fs.readFile(filePath, (err, data) => {
             if (err) {
                 if (err.code === 'ENOENT') {
+                    // Si el archivo no existe, servir la página 404
                     fs.readFile(path.join(PUBLIC_DIR, '404.html'), (err404, data404) => {
-                        res.writeHead(404, { 'Content-Type': 'text/html' });
-                        res.end(err404 ? 'Pagina no encontrada' : data404);
+                        if (err404) {
+                            // Si no se puede leer el archivo 404.html, enviar un mensaje simple
+                            res.writeHead(404, { 'Content-Type': 'text/plain' });
+                            res.end('Página no encontrada');
+                        } else {
+                            // Servir la página 404 personalizada
+                            res.writeHead(404, { 'Content-Type': 'text/html' });
+                            res.end(data404);
+                        }
                     });
                 } else {
+                    // Otros errores del servidor
                     res.writeHead(500, { 'Content-Type': 'text/plain' });
                     res.end('Error interno del servidor');
                 }
             } else {
+                // Servir el archivo solicitado
                 res.writeHead(200, { 'Content-Type': mimeTypes[extname] || 'application/octet-stream' });
                 res.end(data);
             }

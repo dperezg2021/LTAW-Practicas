@@ -157,11 +157,39 @@ footer {
 .empty-cart .btn:hover {
     background-color: #3a2a2a;
 }
-/* style.css */
+
 .mensaje-anadido {
     color: green;
     font-weight: bold;
     margin-top: 10px;
 }
+.error-404 {
+    max-width: 600px;
+    margin: 0 auto;
+    color: #ffffff;
+
+}
+
+.error-404 h2 {
+    font-size: 48px;
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.error-404 p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.error-404 a {
+    color: #bde5ff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.error-404 a:hover {
+    text-decoration: underline;
+}
+
 
 
