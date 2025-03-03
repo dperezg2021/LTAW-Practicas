@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <link rel="icon" type="image/x-icon" href="/MEDIA/rec.ico">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <a href="index.html">
+            <img src="MEDIA/Logovyn.png" alt="Logo vinilo" class="logo">
+        </a>
+        <h1>Iniciar Sesión</h1>
+    </header>
+    <main class="login-container">
+        <form action="procesar_pedido.html" method="POST">
+            <label for="usuario">Usuario:</label>
+            <input type="text" id="usuario" name="usuario" required>
+            
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <button type="submit" class="btn-login">Ingresar</button>
+        </form>
+        <p>¿No tienes cuenta? <a href="#">Regístrate</a></p>
+        <a href="index.html">Volver al inicio</a>
+    </main>
+</body>
+</html>

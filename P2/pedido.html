@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procesar Pedido</title>
+    <link rel="icon" type="image/x-icon" href="/MEDIA/rec.ico">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <a href="index.html">
+            <img src="MEDIA/Logovyn.png" alt="Logo vinilo" class="logo">
+        </a>
+        <h1>Confirmar Pedido</h1>
+    </header>
+    <main class="pedido-container">
+        <h2>Detalles del Pedido</h2>
+        <form action="confirmacion.html" method="POST">
+            <label for="nombre">Nombre Completo:</label>
+            <input type="text" id="nombre" name="nombre" required>
+
+            <label for="direccion">Dirección de Envío:</label>
+            <input type="text" id="direccion" name="direccion" required>
+
+            <label for="tarjeta">Número de Tarjeta:</label>
+            <input type="text" id="tarjeta" name="tarjeta" required>
+
+            <p><strong>Producto seleccionado:</strong> <span id="producto-nombre">A New Star (1993) - Rels B</span></p>
+            <p><strong>Precio:</strong> <span id="producto-precio">29,99€</span></p>
+
+            <button type="submit" class="btn-confirmar">Confirmar Pedido</button>
+        </form>
+        <a href="index.html">Volver al inicio</a>
+    </main>
+</body>
+</html>
