@@ -1,0 +1,89 @@
+{
+    "usuarios": [
+        {
+            "nombre_usuario": "Root",
+            "password": "root",
+            "nombre_real": "Daniel Pérez",
+            "correo": "rooot45@gmail.com"
+        },
+        {
+            "nombre_usuario": "ddez",
+            "password": "ddez1234",
+            "nombre_real": "Daniel Pérez",
+            "correo": "ddez99@gmail.com"
+        }
+    ],
+    "productos": [
+        {
+            "nombre": "El Madrileño - C. Tangana",
+            "descripcion": "Vinilo del legendario álbum de C. Tangana que marcó un antes y un después en la música española.",
+            "precio": "25.99€",
+            "stock": 30,
+            "url": "Producto1.html"
+        },
+        {
+            "nombre": "A New Star (1993) - Rels B",
+            "descripcion": "El álbum que marcó un hito en la carrera de Rels B, ahora en edición vinilo.",
+            "precio": "29.99€",
+            "stock": 26,
+            "url": "Producto2.html"
+        },
+        {
+            "nombre": "La Espalda del Sol - Diego 900",
+            "descripcion": "Edición limitada en doble vinilo del último álbum de Diego 900. Incluye pósters y pegatinas.",
+            "precio": "30.00€",
+            "stock": 20,
+            "url": "Producto3.html"
+        },
+        {
+            "nombre": "Magua con Miel - Choclock",
+            "descripcion": "Vinilo de color naranja translúcido con los mejores temas de Choclock.",
+            "precio": "24.95€",
+            "stock": 15,
+            "url": "Producto4.html"
+        },
+        {
+            "nombre": "Moonlight 992 - Cruz Cafuné",
+            "descripcion": "Edición física del segundo álbum de Cruz Cafuné en vinilo de 180 gramos.",
+            "precio": "28.99€",
+            "stock": 18,
+            "url": "Producto5.html"
+        },
+        {
+            "nombre": "SAYONARA - Álvaro Díaz",
+            "descripcion": "Último álbum de Álvaro Díaz en una edición especial en vinilo.",
+            "precio": "52.99€",
+            "stock": 25,
+            "url": "Producto6.html"
+        },
+        {
+            "nombre": "RR - Rosalía & Rauw Alejandro",
+            "descripcion": "Primer trabajo conjunto de Rosalía y Rauw Alejandro en formato vinilo.",
+            "precio": "24.99€",
+            "stock": 32,
+            "url": "Producto7.html"
+        },
+        {
+            "nombre": "Bodhiria - Judeline",
+            "descripcion": "Vinilo de 'Bodhiria' de Judeline con una selección de sus mejores temas.",
+            "precio": "19.99€",
+            "stock": 28,
+            "url": "Producto8.html"
+        },
+        {
+            "nombre": "Bolasie - Sokren 07",
+            "descripcion": "Último sencillo del artista emergente Sokren 07, en edición vinilo.",
+            "precio": "19.99€",
+            "stock": 35,
+            "url": "Producto9.html"
+        }
+    ],
+    "pedidos": [
+        {
+            "nombre_usuario": "ddez",
+            "direccion_envio": "Casa Rural El Zorro, C. Escuelas, 7, 30441 Calar de la Santa, Murcia ",
+            "numero_tarjeta": "1234 5678 9012 3456",
+            "productos": ["Moonlight 992 - Cruz Cafuné"]
+        }
+    ]
+}
