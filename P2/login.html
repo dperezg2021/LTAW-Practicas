@@ -13,9 +13,13 @@
             <img src="MEDIA/Logovyn.png" alt="Logo vinilo" class="logo">
         </a>
         <h1>Iniciar Sesión</h1>
+        <div id="user-info">
+            <a href="login.html" id="login-btn">Iniciar Sesión</a>
+            <p id="usuario-conectado" style="display: none;">Conectado como: <span id="user-name"></span> | <a href="#" id="logout-btn">Cerrar Sesión</a></p>
+        </div>
     </header>
     <main class="login-container">
-        <form action="procesar_pedido.html" method="POST">
+        <form id="login-form">
             <label for="usuario">Usuario:</label>
             <input type="text" id="usuario" name="usuario" required>
             
@@ -24,8 +28,10 @@
             
             <button type="submit" class="btn-login">Ingresar</button>
         </form>
-        <p>¿No tienes cuenta? <a href="#">Regístrate</a></p>
+        <p>¿No tienes cuenta? <a href="registro.html">Regístrate</a></p>
         <a href="index.html">Volver al inicio</a>
+        <p id="mensaje-error" style="color: red; display: none;">Usuario o contraseña incorrectos.</p>
     </main>
+    <script src="sesion.js"></script>
 </body>
 </html>
