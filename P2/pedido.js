@@ -60,15 +60,18 @@ document.addEventListener("DOMContentLoaded", function () {
         const storedPedido = JSON.parse(localStorage.getItem('pedido'));
 
         if (storedPedido && storedPedido.nombre === nombre && storedPedido.direccion === direccion && storedPedido.tarjeta === tarjeta) {
-            // Mostrar mensaje de éxito
-            alert('¡Compra realizada con éxito!');
+            // Mostrar el mensaje de éxito (hacerlo visible)
+            const mensajeExito = document.getElementById('mensaje-exito');
+            mensajeExito.style.display = 'block';  // Hacer visible el mensaje
 
             // Vaciar el carrito
             localStorage.removeItem('carrito');
             localStorage.removeItem('pedido');
 
-            // Redirigir o actualizar la página
-            window.location.href = 'index.html';  // Opcional: puedes redirigir al inicio
+            // Redirigir a la página de inicio después de 3 segundos (3000ms)
+            setTimeout(function() {
+                window.location.href = 'index.html';  // Redirige a la página de inicio
+            }, 3000);  // Espera 3 segundos antes de redirigir
         } else {
             alert('Los datos ingresados no coinciden. Por favor, revisa la información.');
         }

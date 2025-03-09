@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const btnVaciarCarrito = document.getElementById('vaciar-carrito');
     const btnFinalizarCompra = document.getElementById('finalizar-compra');
     const botonesAgregar = document.querySelectorAll('.agregar-carrito');
+    const mensajeAñadido = document.getElementById('mensaje-anadido');  // Contenedor del mensaje
 
     // Obtener carrito desde localStorage o inicializarlo vacío
     let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
@@ -36,7 +37,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Guardar en localStorage
         localStorage.setItem('carrito', JSON.stringify(carrito));
-        alert(`${nombre} añadido al carrito.`);
+
+        // Mostrar el mensaje de añadido
+        mensajeAñadido.style.display = 'block';  // Hacerlo visible
+        setTimeout(() => {
+            mensajeAñadido.style.display = 'none';  // Ocultarlo después de 3 segundos
+        }, 3000);
+
         renderizarCarrito();
     }
 
