@@ -6,14 +6,33 @@ document.addEventListener("DOMContentLoaded", function () {
     const btnFinalizarCompra = document.getElementById('finalizar-compra');
     const botonesAgregar = document.querySelectorAll('.agregar-carrito');
     const mensajeAñadido = document.getElementById('mensaje-anadido');  // Contenedor del mensaje
-
+    const mensajeError = document.createElement("div"); // Mensaje de error si no está logueado
+    mensajeError.style.display = "none"; // Iniciar oculto
+    mensajeError.textContent = "¡Necesitas iniciar sesión para añadir productos al carrito!";
+    mensajeError.style.color = "red";
+    mensajeError.style.fontSize = "1.2rem";
+    mensajeError.style.textAlign = "center";
+    mensajeError.style.marginTop = "10px";
+    document.body.appendChild(mensajeError); // Agregar al final del body
+    
     // Obtener carrito desde localStorage o inicializarlo vacío
     let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+    // Verificar si el usuario está logueado
+    const usuario = localStorage.getItem('usuario');
 
     // 🔹 FUNCIONES 🔹
 
     // Agregar productos al carrito
     function agregarAlCarrito(event) {
+        if (!usuario) { // Si no está logueado, mostrar mensaje de error
+            mensajeError.style.display = "block";  // Hacer visible el mensaje
+            setTimeout(() => {
+                mensajeError.style.display = "none"; // Ocultarlo después de 3 segundos
+            }, 3000);
+            return;
+        }
+
         const button = event.target;
 
         // Obtener datos del producto desde los atributos del botón
@@ -109,14 +128,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 alert('Tu carrito está vacío.');
                 return;
             }
-        
+
             // Aquí puedes guardar información del carrito en el localStorage o en sesión si quieres mostrar algo en la página de pedido.html
-            localStorage.setItem('carrito', JSON.stringify(carrito)); 
-        
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+
             // Redirigir a pedido.html
             window.location.href = 'pedido.html';
         });
-        
 
         // Mostrar carrito al cargar la página
         renderizarCarrito();
