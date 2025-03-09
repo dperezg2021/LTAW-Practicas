@@ -1,4 +1,3 @@
-
 /* Estilos generales */
 body {
     font-family: Arial, sans-serif;
@@ -111,26 +110,31 @@ header .carrito {
     padding: 20px;
     justify-content: center;
 }
+
 .producto {
     background: white;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
 .producto img {
     max-width: 100%;
     border-radius: 5px;
 }
+
 .detalle-vinilo {
     display: flex;
     align-items: flex-start;
     gap: 20px;
     padding: 20px;
 }
+
 .vinilo-img {
     max-width: 400px;
     border-radius: 5px;
 }
+
 .detalle-info {
     flex: 1;
     color: white;
@@ -140,25 +144,31 @@ header .carrito {
     border-radius: 3px;
     text-align: left;
 }
+
 .detalle-info h2, .detalle-info p {
     margin: 5px 0;
 }
+
 .detalle-info ul {
     list-style-type: none;
     padding-left: 0;
 }
+
 .detalle-info ul li {
     display: block;
     margin-bottom: 5px;
 }
+
 .detalle-info a {
     color: white;
     text-decoration: underline;
 }
+
 .detalle-info a:visited {
     color: white;
     text-decoration: underline;
 }
+
 .empty-cart-icon {
     width: 240px;
     height: 240px;
@@ -172,6 +182,7 @@ footer {
     background-color: #333;
     color: white;
 }
+
 .btn-add-cart {
     background-color: #ff4c4c; /* Rojo llamativo */
     color: white;
@@ -195,6 +206,7 @@ footer {
     background-color: #a00000;
     transform: scale(0.95);
 }
+
 /* Estilos solo para la página de carrito vacío */
 .empty-cart {
     text-align: center;
@@ -235,11 +247,11 @@ footer {
     font-weight: bold;
     margin-top: 10px;
 }
+
 .error-404 {
     max-width: 600px;
     margin: 0 auto;
     color: #ffffff;
-
 }
 
 .error-404 h2 {
@@ -263,5 +275,124 @@ footer {
     text-decoration: underline;
 }
 
+/* ================================================== */
+/* Nuevos estilos para el carrito (añadir al final) */
+/* ================================================== */
 
+#carrito {
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+#carrito h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: white;
+    text-align: center;
+}
+
+.contenedor-carrito {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+}
+
+table th,
+table td {
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+table th {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-weight: bold;
+}
+
+table td {
+    color: white;
+}
+
+table tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Estilos para los botones del carrito */
+.btn {
+    background-color: #ff4c4c;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.btn:hover {
+    background-color: #cc0000;
+    transform: scale(1.05);
+}
+
+.btn:active {
+    background-color: #a00000;
+    transform: scale(0.95);
+}
+
+.btn-vaciar {
+    background-color: #333;
+    margin-right: 1rem;
+}
+
+.btn-vaciar:hover {
+    background-color: #555;
+}
+
+.btn-comprar {
+    background-color: #28a745;
+}
+
+.btn-comprar:hover {
+    background-color: #218838;
+}
+
+/* Estilos para el resumen de la compra */
+.resumen-compra {
+    text-align: right;
+    margin-top: 1.5rem;
+}
+
+.resumen-compra h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: white;
+}
+
+.resumen-compra span {
+    font-weight: bold;
+    color: #ffffff;
+}
+
+/* Estilos para el footer */
+footer {
+    margin-top: 2rem;
+    padding: 1rem;
+    background-color: #333;
+    color: white;
+    text-align: center;
+}
+
+footer p {
+    margin: 0;
+}
 
