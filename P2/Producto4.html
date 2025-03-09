@@ -1,4 +1,5 @@
-<html lang="es"></html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,18 +13,34 @@
             <img src="MEDIA/Logovyn.png" alt="Logo vinilo" class="logo">
         </a>
         <h1>MAGUA CON MIEL</h1>
+        <a href="carrito.html">
+            <img src="MEDIA/carrito-de-compras.png" alt="Logo carrito" class="carrito">
+        </a>
     </header>
+
     <main class="detalle-vinilo">
         <img src="MEDIA/chock.jpg" alt="Vinilo 4" class="vinilo-img">
+
         <div class="detalle-info">
             <h2>MAGUA CON MIEL</h2>
             <p><strong>180 Gramos</strong></p>
-            <p><a href="https://open.spotify.com/intl-es/artist/1Ixof0imwzqpuV21Ug9pKn" target="_blank">Choclock</a> (Artista, Colaborador) | Formato: <strong>Disco de vinilo</strong></p>
+            <p>
+                <a href="https://open.spotify.com/intl-es/artist/1Ixof0imwzqpuV21Ug9pKn" target="_blank">Choclock</a> 
+                (Artista, Colaborador) | Formato: <strong>Disco de vinilo</strong>
+            </p>
             <p>⭐ 4,3 - 234 valoraciones</p>
             <p><strong>200+ comprados el mes pasado</strong></p>
-            <button id="btn-add-cart" class="btn-add-cart">🛒 Añadir al carrito</button>
-            <p id="mensaje-anadido" class="mensaje-anadido" style="display: none;">Añadido</p>
             <p><strong>Precio: 24,95€</strong></p>
+
+           
+            <button class="agregar-carrito"
+                data-nombre="MAGUA CON MIEL - Choclock"
+                data-precio="24.95"
+                data-stock="15">
+                Añadir al Carrito
+            </button>
+
+            <p id="mensaje-anadido" class="mensaje-anadido" style="display: none;">Añadido</p>
 
             <p><strong>Tracklist:</strong></p>
             <ul>
@@ -43,9 +60,11 @@
                 <li>W Sin Yandel</li>
                 <li>Agridulce</li>
             </ul>
+
             <a href="index.html">Inicio</a>
         </div>
     </main>
+
     <script src="carrito.js"></script>
 </body>
 </html>
