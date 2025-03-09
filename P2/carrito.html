@@ -1,9 +1,9 @@
-<html lang="es"></html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrito de la compra</title>
-    <link rel="icon" type="image/x-icon" href="/MEDIA/rec.ico">
+    <title>Carrito de Compras</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,15 +11,42 @@
         <a href="index.html">
             <img src="MEDIA/Logovyn.png" alt="Logo vinilo" class="logo">
         </a>
-        <h1>Cesta de la compra</h1>
+        <h1>Carrito de Compras</h1>
     </header>
-    <main class="empty-cart">
-        <p><strong>¡Oooooops!</strong></p>
-        <img src="MEDIA/empty-cart.jpeg" alt="Carrito vacío" class="empty-cart-icon">
-        <p><strong>¡Tu cesta está vacía!</strong></p>
-        <p><strong>Explora nuestros productos y descubre increíbles ofertas.</strong></p>
-        <a href="index.html" class="btn">Ver productos</a>
-    </main>
-    
 
+    <main>
+        <section id="carrito">
+            <h2>Tu Carrito</h2>
+            <div class="contenedor-carrito">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                            <th>Total</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-carrito">
+                        <!-- Aquí se cargarán los productos dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="resumen-compra">
+                <h3>Total: <span id="total-carrito">0.00€</span></h3>
+                <button id="vaciar-carrito" class="btn btn-vaciar">Vaciar Carrito</button>
+                <button id="finalizar-compra" class="btn btn-comprar">Finalizar Compra</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Vinyl Vibes</p>
+    </footer>
+
+    <script src="carrito.js"></script>
 </body>
+</html>
+
