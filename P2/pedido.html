@@ -16,7 +16,10 @@
     </header>
     <main class="pedido-container">
         <h2>Detalles del Pedido</h2>
-        <form action="confirmacion.html" method="POST">
+        
+        <div id="productos-seleccionados"></div>
+        
+        <form id="pedido-form">
             <label for="nombre">Nombre Completo:</label>
             <input type="text" id="nombre" name="nombre" required>
 
@@ -26,12 +29,12 @@
             <label for="tarjeta">Número de Tarjeta:</label>
             <input type="text" id="tarjeta" name="tarjeta" required>
 
-            <p><strong>Producto seleccionado:</strong> <span id="producto-nombre">A New Star (1993) - Rels B</span></p>
-            <p><strong>Precio:</strong> <span id="producto-precio">29,99€</span></p>
-
             <button type="submit" class="btn-confirmar">Confirmar Pedido</button>
         </form>
         <a href="index.html">Volver al inicio</a>
     </main>
+
+    <!-- Aquí enlazas el archivo JavaScript -->
+    <script src="pedido.js"></script>
 </body>
 </html>

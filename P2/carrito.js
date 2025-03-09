@@ -102,12 +102,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 alert('Tu carrito está vacío.');
                 return;
             }
-
-            alert('¡Compra realizada con éxito!');
-            carrito = []; // Vaciar el carrito
-            localStorage.setItem('carrito', JSON.stringify(carrito));
-            renderizarCarrito();
+        
+            // Aquí puedes guardar información del carrito en el localStorage o en sesión si quieres mostrar algo en la página de pedido.html
+            localStorage.setItem('carrito', JSON.stringify(carrito)); 
+        
+            // Redirigir a pedido.html
+            window.location.href = 'pedido.html';
         });
+        
 
         // Mostrar carrito al cargar la página
         renderizarCarrito();
