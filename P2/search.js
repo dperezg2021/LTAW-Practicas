@@ -13,11 +13,13 @@ const productos = [
 const searchInput = document.getElementById("search-input");
 const searchSuggestions = document.getElementById("search-suggestions");
 const searchBtn = document.getElementById("search-btn");
+const noResultsMessage = document.getElementById("no-results-message"); // Elemento para mostrar el mensaje de no encontrado
 
 // Muestra sugerencias mientras el usuario escribe
 searchInput.addEventListener("input", () => {
     const query = searchInput.value.toLowerCase().trim();
     searchSuggestions.innerHTML = ""; // Limpiar sugerencias
+    noResultsMessage.classList.add("hidden"); // Ocultar mensaje de no encontrado
 
     if (query.length < 3) {
         searchSuggestions.classList.add("hidden");
@@ -40,6 +42,7 @@ searchInput.addEventListener("input", () => {
         });
     } else {
         searchSuggestions.classList.add("hidden");
+        noResultsMessage.classList.remove("hidden"); // Mostrar mensaje de no encontrado
     }
 });
 
@@ -51,6 +54,6 @@ searchBtn.addEventListener("click", () => {
     if (match) {
         window.location.href = match.url;
     } else {
-        alert("Producto no encontrado.");
+        noResultsMessage.classList.remove("hidden"); // Mostrar mensaje de no encontrado
     }
 });
