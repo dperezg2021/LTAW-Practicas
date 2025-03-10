@@ -7,12 +7,22 @@ document.addEventListener("DOMContentLoaded", function () {
     const botonesAgregar = document.querySelectorAll('.agregar-carrito');
     const mensajeAñadido = document.getElementById('mensaje-anadido');  // Contenedor del mensaje
     const mensajeError = document.createElement("div"); // Mensaje de error si no está logueado
+
     mensajeError.style.display = "none"; // Iniciar oculto
     mensajeError.textContent = "¡Necesitas iniciar sesión para añadir productos al carrito!";
     mensajeError.style.color = "red";
     mensajeError.style.fontSize = "1.2rem";
     mensajeError.style.textAlign = "center";
     mensajeError.style.marginTop = "10px";
+    mensajeError.style.position = "fixed";
+    mensajeError.style.top = "50%";
+    mensajeError.style.left = "50%";
+    mensajeError.style.transform = "translate(-50%, -50%)";
+    mensajeError.style.backgroundColor = "white";
+    mensajeError.style.padding = "20px";
+    mensajeError.style.border = "2px solid red";
+    mensajeError.style.borderRadius = "10px";
+    mensajeError.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.2)";
     document.body.appendChild(mensajeError); // Agregar al final del body
     
     // Obtener carrito desde localStorage o inicializarlo vacío
@@ -29,6 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
             mensajeError.style.display = "block";  // Hacer visible el mensaje
             setTimeout(() => {
                 mensajeError.style.display = "none"; // Ocultarlo después de 3 segundos
+                window.location.href = "login.html"; // Redirigir a login.html
             }, 3000);
             return;
         }
@@ -145,3 +156,4 @@ document.addEventListener("DOMContentLoaded", function () {
         boton.addEventListener('click', agregarAlCarrito);
     });
 });
+
