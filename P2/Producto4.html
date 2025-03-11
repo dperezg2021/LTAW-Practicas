@@ -13,6 +13,19 @@
             <img src="MEDIA/Logovyn.png" alt="Logo vinilo" class="logo">
         </a>
         <h1>MAGUA CON MIEL</h1>
+        <div id="search-container">
+            <div id="no-results-message" class="hidden">Producto no encontrado.</div>
+            <input type="text" id="search-input" placeholder="Buscar un producto..." />
+            <button id="search-btn">
+                🔍
+            </button>
+            <ul id="search-suggestions" class="hidden"></ul>
+        </div>
+        
+        <div id="user-info">
+            <a href="login.html" id="login-btn">Iniciar Sesión</a>
+            <p id="usuario-conectado" style="display: none;">Conectado como: <span id="user-name"></span> | <a href="#" id="logout-btn">Cerrar Sesión</a></p>
+        </div>
         <a href="carrito.html">
             <img src="MEDIA/carrito-de-compras.png" alt="Logo carrito" class="carrito">
         </a>
@@ -65,6 +78,7 @@
         </div>
     </main>
 
-    <script src="carrito.js"></script>
+    <script src="sesion.js"></script> 
+    <script src="search.js"></script>
 </body>
 </html>
