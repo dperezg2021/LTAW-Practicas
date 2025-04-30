@@ -28,14 +28,24 @@ document.addEventListener("DOMContentLoaded", function () {
     // Obtener carrito desde localStorage o inicializarlo vacío
     let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
+    // Función para obtener la cookie
+    function getCookie(name) {
+        let cookies = document.cookie.split("; ");
+        for (let i = 0; i < cookies.length; i++) {
+            let [key, value] = cookies[i].split("=");
+            if (key === name) return value;
+        }
+        return null;
+    }
+
     // Verificar si el usuario está logueado
-    const usuario = localStorage.getItem('usuario');
+    const usuarioData = getCookie("usuario");
 
     // 🔹 FUNCIONES 🔹
 
     // Agregar productos al carrito
     function agregarAlCarrito(event) {
-        if (!usuario) { // Si no está logueado, mostrar mensaje de error
+        if (!usuarioData) { // Si no está logueado, mostrar mensaje de error
             mensajeError.style.display = "block";  // Hacer visible el mensaje
             setTimeout(() => {
                 mensajeError.style.display = "none"; // Ocultarlo después de 3 segundos
@@ -156,4 +166,3 @@ document.addEventListener("DOMContentLoaded", function () {
         boton.addEventListener('click', agregarAlCarrito);
     });
 });
-

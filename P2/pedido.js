@@ -1,4 +1,3 @@
-document.addEventListener("DOMContentLoaded", function () {
     // Obtener el carrito desde localStorage
     const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
@@ -76,5 +75,3 @@ document.addEventListener("DOMContentLoaded", function () {
             alert('Los datos ingresados no coinciden. Por favor, revisa la información.');
         }
     });
-});
-
