@@ -1,6 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const url = require('url'); // Necesario para parsear parámetros de URL
 
 const PORT = 8002;   
 const PUBLIC_DIR = __dirname;
@@ -13,10 +14,38 @@ const mimeTypes = {
     '.jpg': 'image/jpeg',
     '.jpeg': 'image/jpeg',
     '.gif': 'image/gif',
-    '.svg': 'image/svg+xml'
+    '.svg': 'image/svg+xml',
+    '.json': 'application/json' 
 };
 
+// Cargamos los datos de productos una vez al iniciar el servidor
+let productosData = [];
+try {
+    const data = fs.readFileSync(path.join(PUBLIC_DIR, 'tienda.json'), 'utf8');
+    productosData = JSON.parse(data).productos;
+} catch (err) {
+    console.error('Error al cargar datos.json:', err);
+}
+
 const server = http.createServer((req, res) => {
+    // Endpoint de búsqueda
+    if (req.url.startsWith('/api/search')) {
+        const queryParams = url.parse(req.url, true).query;
+        const searchTerm = (queryParams.q || '').toLowerCase().trim();
+        
+        // Filtramos productos que coincidan con el término de búsqueda
+        const results = productosData.filter(producto => 
+            producto.nombre.toLowerCase().includes(searchTerm)
+        );
+        
+        res.writeHead(200, { 
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*' // Para desarrollo local
+        });
+        res.end(JSON.stringify(results));
+        return;
+    }
+    
     // Si se solicita el recurso /ls
     if (req.url === '/ls') {
         // Leer el contenido del directorio público
