@@ -5,20 +5,38 @@ document.addEventListener('DOMContentLoaded', function() {
     const noResultsMessage = document.getElementById('no-results-message');
     const searchContainer = document.getElementById('search-container');
 
- 
-    async function fetchSuggestions(query) {
+    // Cargar los productos desde el JSON local
+    async function fetchProducts() {
         try {
-            const response = await fetch(`http://localhost:8002/api/search?q=${encodeURIComponent(query)}`);
-            
+            const response = await fetch('tienda.json');
             if (!response.ok) {
-                throw new Error('Error en la respuesta del servidor');
+                throw new Error('Error al cargar los productos');
             }
-            
-            return await response.json();
+            const data = await response.json();
+            return data.productos || [];
         } catch (error) {
-            console.error('Error al obtener sugerencias:', error);
+            console.error('Error al obtener productos:', error);
             return [];
         }
+    }
+
+    // Función para buscar coincidencias
+    async function searchProducts(query) {
+        const products = await fetchProducts();
+        const lowerQuery = query.toLowerCase();
+        
+        
+        return products.filter(product => 
+            product.nombre.toLowerCase().includes(lowerQuery) ||
+            product.artista.toLowerCase().includes(lowerQuery)
+        )
+            .map(product => ({
+                id: product.id,
+                nombre: product.nombre,
+                artista: product.artista,
+                url: `producto.html?id=${product.id}`,
+                imagen: `MEDIA/${product.imagen}`
+            }));
     }
 
     // Función para mostrar sugerencias
@@ -36,10 +54,12 @@ document.addEventListener('DOMContentLoaded', function() {
         
         suggestions.forEach(product => {
             const li = document.createElement('li');
-            li.textContent = product.nombre;
-            li.addEventListener('click', () => {
-                window.location.href = product.url;
-            });
+            li.innerHTML = `
+                <a href="${product.url}" class="suggestion-item">
+                    <img src="${product.imagen}" alt="${product.nombre}" class="suggestion-img">
+                    <span>${product.nombre} - ${product.artista}</span>
+                </a>
+            `;
             searchSuggestions.appendChild(li);
         });
     }
@@ -59,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         searchTimeout = setTimeout(async () => {
-            const suggestions = await fetchSuggestions(query);
+            const suggestions = await searchProducts(query);
             displaySuggestions(suggestions);
         }, 300);
     });
@@ -70,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (query.length === 0) return;
         
-        const suggestions = await fetchSuggestions(query);
+        const suggestions = await searchProducts(query);
         const exactMatch = suggestions.find(
             item => item.nombre.toLowerCase() === query.toLowerCase()
         );
