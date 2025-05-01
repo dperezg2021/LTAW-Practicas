@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const url = require('url'); // Necesario para parsear parámetros de URL
 
-const PORT = 8002;   
+const PORT = 8001;   
 const PUBLIC_DIR = __dirname;
 
 const mimeTypes = {
