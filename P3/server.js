@@ -40,9 +40,9 @@ io.on('connection', (socket) => {
     socket.on('chatMessage', (msg) => {
         if (msg.startsWith('/')) {
             let response = '';
-            switch (msg.trim()) {
+            switch (msg.trim().toLowerCase()) { // Convertimos a minúsculas para hacerlo case-insensitive
                 case '/help':
-                    response = 'Comandos disponibles: /help, /list, /hello, /date';
+                    response = 'Comandos disponibles: /help, /list, /hello, /date, /happy, /gato, /dado, /fiesta, /amor';
                     break;
                 case '/list':
                     response = `👥 Usuarios conectados: ${connectedUsers}`;
@@ -52,6 +52,25 @@ io.on('connection', (socket) => {
                     break;
                 case '/date':
                     response = `📅 Fecha actual: ${new Date().toLocaleString()}`;
+                    break;
+                case '/happy':
+                    response = '😊🎉 ¡Estoy feliz! ¡Vamos a celebrarlo! 🎊😄';
+                    break;
+                case '/gato':
+                    const gatos = ['😺', '😸', '😹', '😻', '😼', '😽', '🙀', '😿', '😾'];
+                    const gatoRandom = gatos[Math.floor(Math.random() * gatos.length)];
+                    response = `${gatoRandom} ¡Miau! Aquí tienes un gato aleatorio: ${gatoRandom}`;
+                    break;
+                case '/dado':
+                    const dado = Math.floor(Math.random() * 6) + 1;
+                    response = `🎲 Tiraste el dado y salió: ${dado} ${'⚀⚁⚂⚃⚄⚅'.split('')[dado-1]}`;
+                    break;
+                case '/fiesta':
+                    response = '🎊🎉🎈 ¡FIESTA! 🎈🎉🎊\n¡Todos a bailar! 💃🕺\n┏(＾0＾)┛┗(＾0＾)┓';
+                    break;
+                case '/amor':
+                    const porcentajeAmor = Math.floor(Math.random() * 101);
+                    response = `💖 El nivel de amor en este chat es del ${porcentajeAmor}% ${porcentajeAmor > 50 ? '❤️' : '💔'}`;
                     break;
                 default:
                     response = '❌ Comando no reconocido. Usa /help';
