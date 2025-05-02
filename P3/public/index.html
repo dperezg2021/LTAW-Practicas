@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Web </title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <i class="fas fa-comment-dots"></i>
+            <span>Chat Web </span>
+        </div>
+        
+        <div id="chat"></div>
+        
+        <div class="input-container">
+            <input id="message" placeholder="Escribe un mensaje..." autocomplete="off" />
+            <button onclick="sendMessage()">
+                <i class="fas fa-paper-plane"></i> Enviar
+            </button>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const chat = document.getElementById('chat');
+        const input = document.getElementById('message');
+
+        socket.on('message', (msg) => {
+            const messageDiv = document.createElement('div');
+            
+            // Detectar tipo de mensaje
+            if (msg.includes('🔔') || msg.includes('🚪') || msg.includes('👋')) {
+                messageDiv.className = 'message message-system';
+            } else if (msg.startsWith('❌') || msg.startsWith('👥') || msg.startsWith('📅')) {
+                messageDiv.className = 'message message-incoming';
+            } else {
+                messageDiv.className = 'message message-outgoing';
+            }
+            
+            messageDiv.innerHTML = msg;
+            
+            // Añadir hora
+            const timeSpan = document.createElement('span');
+            timeSpan.className = 'message-time';
+            timeSpan.textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            messageDiv.appendChild(timeSpan);
+            
+            chat.appendChild(messageDiv);
+            chat.scrollTop = chat.scrollHeight;
+        });
+
+        function sendMessage() {
+            const msg = input.value.trim();
+            if (msg) {
+                socket.emit('chatMessage', msg);
+                input.value = '';
+                input.focus();
+            }
+        }
+
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+        
+        // Auto-focus al cargar
+        window.addEventListener('load', () => {
+            input.focus();
+        });
+    </script>
+</body>
+</html>
