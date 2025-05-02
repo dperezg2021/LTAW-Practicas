@@ -12,6 +12,7 @@
         <div class="chat-header">
             <i class="fas fa-comment-dots"></i>
             <span>Chat Web</span>
+            <div id="online-users">Usuarios: 0</div>
         </div>
 
         <div id="nickname-container">
@@ -28,6 +29,7 @@
                 <i class="fas fa-paper-plane"></i> Enviar
             </button>
         </div>
+        <div id="typing-status"></div>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
@@ -37,7 +39,10 @@
         const input = document.getElementById('message');
         const nicknameInput = document.getElementById('nickname');
         const nicknameContainer = document.getElementById('nickname-container');
+        const typingStatus = document.getElementById('typing-status');
+        const onlineUsersElement = document.getElementById('online-users');
         let userNickname = '';
+        let typingTimeout;
 
         // Enviar el nickname al servidor
         function setNickname() {
@@ -59,8 +64,22 @@
                 socket.emit('chatMessage', msg);
                 input.value = '';
                 input.focus();
+                socket.emit('stopTyping');
             }
         }
+
+        // Manejar cuando el usuario está escribiendo
+        input.addEventListener('input', () => {
+            if (input.value.trim()) {
+                socket.emit('typing');
+                clearTimeout(typingTimeout);
+                typingTimeout = setTimeout(() => {
+                    socket.emit('stopTyping');
+                }, 2000);
+            } else {
+                socket.emit('stopTyping');
+            }
+        });
 
         socket.on('message', (msg) => {
             const messageDiv = document.createElement('div');
@@ -76,6 +95,25 @@
             messageDiv.innerHTML = msg.text || msg;
             chat.appendChild(messageDiv);
             chat.scrollTop = chat.scrollHeight;
+        });
+
+        // Mostrar cuando alguien está escribiendo
+        socket.on('userTyping', (nickname) => {
+            typingStatus.textContent = `${nickname} está escribiendo...`;
+            setTimeout(() => {
+                if (typingStatus.textContent === `${nickname} está escribiendo...`) {
+                    typingStatus.textContent = '';
+                }
+            }, 3000);
+        });
+
+        socket.on('userStopTyping', () => {
+            typingStatus.textContent = '';
+        });
+
+        // Actualizar contador de usuarios conectados
+        socket.on('updateUsers', (count) => {
+            onlineUsersElement.textContent = `Usuarios: ${count}`;
         });
 
         // Auto-focus al cargar

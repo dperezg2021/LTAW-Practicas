@@ -6,6 +6,7 @@ const app = express();
 const PORT = 3000;
 
 const nicknames = {}; // Almacena los nicknames por socket.id
+const typingUsers = new Set(); // Almacena los usuarios que están escribiendo
 
 // CSP segura pero permisiva
 app.use((req, res, next) => {
@@ -34,6 +35,7 @@ app.use(express.static('public'));
 
 io.on('connection', (socket) => {
     connectedUsers++;
+    io.emit('updateUsers', connectedUsers);
 
     // Espera a que el cliente envíe su nickname
     socket.on('setNickname', (nickname) => {
@@ -49,6 +51,26 @@ io.on('connection', (socket) => {
             type: 'system',
             text: `🔔 ${nickname} se ha unido al chat`
         });
+
+        io.emit('updateUsers', connectedUsers);
+    });
+
+    // Manejar cuando un usuario está escribiendo
+    socket.on('typing', () => {
+        const nickname = nicknames[socket.id];
+        if (nickname && !typingUsers.has(nickname)) {
+            typingUsers.add(nickname);
+            socket.broadcast.emit('userTyping', nickname);
+        }
+    });
+
+    // Manejar cuando un usuario deja de escribir
+    socket.on('stopTyping', () => {
+        const nickname = nicknames[socket.id];
+        if (nickname && typingUsers.has(nickname)) {
+            typingUsers.delete(nickname);
+            socket.broadcast.emit('userStopTyping');
+        }
     });
 
     // Maneja mensajes normales o comandos
@@ -110,11 +132,18 @@ io.on('connection', (socket) => {
         const nickname = nicknames[socket.id] || 'Un usuario';
         delete nicknames[socket.id];
         connectedUsers--;
+        
+        if (typingUsers.has(nickname)) {
+            typingUsers.delete(nickname);
+            io.emit('userStopTyping');
+        }
 
         io.emit('message', {
             type: 'system',
             text: `🚪 ${nickname} ha salido del chat`
         });
+        
+        io.emit('updateUsers', connectedUsers);
     });
 });
 
