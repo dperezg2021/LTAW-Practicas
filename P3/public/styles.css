@@ -6,9 +6,9 @@
     --pastel-pink: #ffd6e0;
     --text-dark: #2b2d42;
     --text-light: #f8f9fa;
-  }
-  
-  body {
+}
+
+body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 20px;
@@ -17,13 +17,13 @@
     align-items: center;
     min-height: 100vh;
     background-image: url('/fondorec.jpeg');
-    background-size: cover;      /* Muestra la imagen en su tamaño original */
-    background-repeat: no-repeat; /* Evita que se repita */
-    background-position: center center; /* Centra la imagen */
-    background-attachment: scroll; /* La imagen se mueve con el scroll */
-  }
-  
-  .chat-container {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: scroll;
+}
+
+.chat-container {
     width: 100%;
     max-width: 800px;
     background-color: white;
@@ -33,9 +33,9 @@
     display: flex;
     flex-direction: column;
     height: 80vh;
-  }
-  
-  .chat-header {
+}
+
+.chat-header {
     background-color: var(--pastel-green);
     color: var(--text-dark);
     padding: 15px 20px;
@@ -44,9 +44,9 @@
     display: flex;
     align-items: center;
     gap: 10px;
-  }
-  
-  #chat {
+}
+
+#chat {
     flex-grow: 1;
     padding: 20px;
     overflow-y: auto;
@@ -54,55 +54,56 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
-  }
-  
-  .message {
+}
+
+.message {
     max-width: 70%;
     padding: 12px 16px;
     border-radius: 18px;
     line-height: 1.4;
     position: relative;
     word-wrap: break-word;
-  }
-  
-  .message-incoming {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.message-incoming {
     background-color: white;
     align-self: flex-start;
     border-bottom-left-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .message-outgoing {
+}
+
+.message-outgoing {
     background-color: var(--pastel-green);
     align-self: flex-end;
     border-bottom-right-radius: 5px;
     color: var(--text-dark);
-  }
-  
-  .message-system {
+}
+
+.message-system {
     background-color: var(--pastel-yellow);
     align-self: center;
     text-align: center;
     font-style: italic;
     font-size: 0.9rem;
-  }
-  
-  .message-time {
+}
+
+.message-time {
     font-size: 0.7rem;
     color: #6c757d;
     margin-top: 4px;
     text-align: right;
-  }
-  
-  .input-container {
+}
+
+.input-container {
     display: flex;
     padding: 15px;
     background-color: white;
     border-top: 1px solid #e9ecef;
     gap: 10px;
-  }
-  
-  #message {
+}
+
+#message {
     flex-grow: 1;
     padding: 12px 15px;
     border: 1px solid #ced4da;
@@ -110,13 +111,13 @@
     font-size: 1rem;
     outline: none;
     transition: border 0.3s;
-  }
-  
-  #message:focus {
+}
+
+#message:focus {
     border-color: var(--pastel-green-dark);
-  }
-  
-  button {
+}
+
+button {
     background-color: var(--pastel-green-dark);
     color: var(--text-dark);
     border: none;
@@ -125,33 +126,151 @@
     cursor: pointer;
     font-weight: 600;
     transition: all 0.3s;
-  }
-  
-  button:hover {
+}
+
+button:hover {
     background-color: var(--pastel-green);
     transform: translateY(-2px);
-  }
-  
-  /* Animación para nuevos mensajes */
-  @keyframes fadeIn {
+}
+
+/* Animación para nuevos mensajes */
+@keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
-  }
-  
-  .message {
-    animation: fadeIn 0.3s ease-out;
-  }
-  
-  /* Scrollbar personalizada */
-  #chat::-webkit-scrollbar {
+}
+
+/* Scrollbar personalizada */
+#chat::-webkit-scrollbar {
     width: 8px;
-  }
-  
-  #chat::-webkit-scrollbar-track {
+}
+
+#chat::-webkit-scrollbar-track {
     background: var(--pastel-blue);
-  }
-  
-  #chat::-webkit-scrollbar-thumb {
+}
+
+#chat::-webkit-scrollbar-thumb {
     background-color: var(--pastel-green);
     border-radius: 4px;
-  }
+}
+
+/* Panel de control de sonido */
+.sound-controls {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(255,255,255,0.9);
+    padding: 10px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.sound-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+    color: var(--text-dark);
+    font-size: 1.5rem;
+}
+
+#nickname-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 25px;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    outline: none;
+    transition: border 0.3s;
+}
+
+#nickname-input:focus {
+    border-color: var(--pastel-green-dark);
+}
+
+.modal-content button {
+    background-color: var(--pastel-green-dark);
+    color: var(--text-dark);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.modal-content button:hover {
+    background-color: var(--pastel-green);
+    transform: translateY(-2px);
+}
+/* Añade estos estilos */
+.chat-info {
+    background-color: var(--pastel-green-dark);
+    padding: 8px 20px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+#user-list-container {
+    background-color: white;
+    padding: 15px;
+    border-bottom: 1px solid #e9ecef;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+#user-list-container h3 {
+    margin: 0 0 10px 0;
+    color: var(--text-dark);
+}
+
+#user-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+#user-list li {
+    background-color: var(--pastel-green);
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+}
+
+#typing-status {
+    font-style: italic;
+    color: #6c757d;
+}

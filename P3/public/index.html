@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Web </title>
+    <title>Chat Web</title>
     <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -11,9 +11,15 @@
     <div class="chat-container">
         <div class="chat-header">
             <i class="fas fa-comment-dots"></i>
-            <span>Chat Web </span>
+            <span>Chat Web</span>
         </div>
-        
+
+        <div id="nickname-container">
+            <label for="nickname">Ingresa tu nickname:</label>
+            <input type="text" id="nickname" placeholder="Tu nickname" autocomplete="off" />
+            <button onclick="setNickname()">Confirmar</button>
+        </div>
+
         <div id="chat"></div>
         
         <div class="input-container">
@@ -29,31 +35,24 @@
         const socket = io();
         const chat = document.getElementById('chat');
         const input = document.getElementById('message');
+        const nicknameInput = document.getElementById('nickname');
+        const nicknameContainer = document.getElementById('nickname-container');
+        let userNickname = '';
 
-        socket.on('message', (msg) => {
-            const messageDiv = document.createElement('div');
-            
-            // Detectar tipo de mensaje
-            if (msg.includes('🔔') || msg.includes('🚪') || msg.includes('👋')) {
-                messageDiv.className = 'message message-system';
-            } else if (msg.startsWith('❌') || msg.startsWith('👥') || msg.startsWith('📅')) {
-                messageDiv.className = 'message message-incoming';
+        // Enviar el nickname al servidor
+        function setNickname() {
+            const nickname = nicknameInput.value.trim();
+            if (nickname) {
+                socket.emit('setNickname', nickname);
+                userNickname = nickname;  // Guardar el nickname del usuario
+                nicknameContainer.style.display = 'none'; // Ocultar el formulario de nickname
+                chat.style.display = 'block'; // Mostrar la sección del chat
             } else {
-                messageDiv.className = 'message message-outgoing';
+                alert('Por favor, ingresa un nickname.');
             }
-            
-            messageDiv.innerHTML = msg;
-            
-            // Añadir hora
-            const timeSpan = document.createElement('span');
-            timeSpan.className = 'message-time';
-            timeSpan.textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            messageDiv.appendChild(timeSpan);
-            
-            chat.appendChild(messageDiv);
-            chat.scrollTop = chat.scrollHeight;
-        });
+        }
 
+        // Enviar mensaje al servidor
         function sendMessage() {
             const msg = input.value.trim();
             if (msg) {
@@ -63,13 +62,29 @@
             }
         }
 
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') sendMessage();
+        socket.on('message', (msg) => {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message';
+
+            // Si el mensaje fue enviado por el propio usuario, lo alineamos a la derecha
+            if (msg.sender === userNickname) {
+                messageDiv.classList.add('message-outgoing');  // Mensaje enviado por el cliente
+            } else {
+                messageDiv.classList.add('message-incoming');  // Mensaje recibido de otro usuario
+            }
+
+            messageDiv.innerHTML = msg.text || msg;
+            chat.appendChild(messageDiv);
+            chat.scrollTop = chat.scrollHeight;
         });
-        
+
         // Auto-focus al cargar
         window.addEventListener('load', () => {
-            input.focus();
+            nicknameInput.focus();
+        });
+
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') sendMessage();
         });
     </script>
 </body>

@@ -5,22 +5,24 @@ const { Server } = require('socket.io');
 const app = express();
 const PORT = 3000;
 
-// Configuración CSP segura pero permisiva para el chat
+const nicknames = {}; // Almacena los nicknames por socket.id
+
+// CSP segura pero permisiva
 app.use((req, res, next) => {
     res.setHeader(
         "Content-Security-Policy",
         "default-src 'self'; " +
         "script-src 'self' 'unsafe-inline' https://cdn.socket.io; " +
-        "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; " + // Permite Font Awesome
+        "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; " +
         "img-src 'self' data: blob:; " +
-        "font-src 'self' https://cdnjs.cloudflare.com; " + // Permite fuentes de Font Awesome
+        "font-src 'self' https://cdnjs.cloudflare.com; " +
         "connect-src 'self' ws://localhost:3000 wss://localhost:3000; " +
-        "frame-src 'none'; " +
-        "object-src 'none'"
+        "frame-src 'none'; object-src 'none'"
     );
     next();
 });
-// Ignora favicon.ico
+
+// Ignora favicon
 app.get('/favicon.ico', (req, res) => res.status(204).end());
 
 const server = http.createServer(app);
@@ -28,19 +30,34 @@ const io = new Server(server);
 
 let connectedUsers = 0;
 
-// Sirve archivos estáticos desde /public
 app.use(express.static('public'));
 
 io.on('connection', (socket) => {
     connectedUsers++;
 
-    socket.emit('message', '👋 Bienvenido al chat');
-    socket.broadcast.emit('message', '🔔 Un nuevo usuario se ha conectado');
+    // Espera a que el cliente envíe su nickname
+    socket.on('setNickname', (nickname) => {
+        nicknames[socket.id] = nickname;
 
+        // Mensajes de bienvenida
+        socket.emit('message', {
+            type: 'system',
+            text: `👋 Bienvenid@ ${nickname}!`
+        });
+
+        socket.broadcast.emit('message', {
+            type: 'system',
+            text: `🔔 ${nickname} se ha unido al chat`
+        });
+    });
+
+    // Maneja mensajes normales o comandos
     socket.on('chatMessage', (msg) => {
+        const nickname = nicknames[socket.id] || 'Anónimo';
+
         if (msg.startsWith('/')) {
             let response = '';
-            switch (msg.trim().toLowerCase()) { // Convertimos a minúsculas para hacerlo case-insensitive
+            switch (msg.trim().toLowerCase()) {
                 case '/help':
                     response = 'Comandos disponibles: /help, /list, /hello, /date, /happy, /gato, /dado, /fiesta, /amor';
                     break;
@@ -75,15 +92,29 @@ io.on('connection', (socket) => {
                 default:
                     response = '❌ Comando no reconocido. Usa /help';
             }
-            socket.emit('message', response);
+
+            socket.emit('message', {
+                type: 'system',
+                text: response
+            });
         } else {
-            io.emit('message', msg);
+            io.emit('message', {
+                type: 'chat',
+                sender: nickname,
+                text: msg
+            });
         }
     });
 
     socket.on('disconnect', () => {
+        const nickname = nicknames[socket.id] || 'Un usuario';
+        delete nicknames[socket.id];
         connectedUsers--;
-        io.emit('message', '🚪 Un usuario ha salido del chat');
+
+        io.emit('message', {
+            type: 'system',
+            text: `🚪 ${nickname} ha salido del chat`
+        });
     });
 });
 
