@@ -10,13 +10,17 @@
   
   body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f8f9fa;
     margin: 0;
     padding: 20px;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
     min-height: 100vh;
+    background-image: url('/fondorec.jpeg');
+    background-size: cover;      /* Muestra la imagen en su tamaño original */
+    background-repeat: no-repeat; /* Evita que se repita */
+    background-position: center center; /* Centra la imagen */
+    background-attachment: scroll; /* La imagen se mueve con el scroll */
   }
   
   .chat-container {
