@@ -23,7 +23,6 @@ app.use((req, res, next) => {
     next();
 });
 
-// Ignora favicon
 app.get('/favicon.ico', (req, res) => res.status(204).end());
 
 const server = http.createServer(app);
@@ -33,15 +32,19 @@ let connectedUsers = 0;
 
 app.use(express.static('public'));
 
+// Emitir lista actual de nicknames a todos
+function emitUserList() {
+    const userList = Object.values(nicknames);
+    io.emit('userList', userList);
+}
+
 io.on('connection', (socket) => {
     connectedUsers++;
     io.emit('updateUsers', connectedUsers);
 
-    // Espera a que el cliente envíe su nickname
     socket.on('setNickname', (nickname) => {
         nicknames[socket.id] = nickname;
 
-        // Mensajes de bienvenida
         socket.emit('message', {
             type: 'system',
             text: `👋 Bienvenid@ ${nickname}!`
@@ -52,10 +55,10 @@ io.on('connection', (socket) => {
             text: `🔔 ${nickname} se ha unido al chat`
         });
 
+        emitUserList();
         io.emit('updateUsers', connectedUsers);
     });
 
-    // Manejar cuando un usuario está escribiendo
     socket.on('typing', () => {
         const nickname = nicknames[socket.id];
         if (nickname && !typingUsers.has(nickname)) {
@@ -64,7 +67,6 @@ io.on('connection', (socket) => {
         }
     });
 
-    // Manejar cuando un usuario deja de escribir
     socket.on('stopTyping', () => {
         const nickname = nicknames[socket.id];
         if (nickname && typingUsers.has(nickname)) {
@@ -73,7 +75,6 @@ io.on('connection', (socket) => {
         }
     });
 
-    // Maneja mensajes normales o comandos
     socket.on('chatMessage', (msg) => {
         const nickname = nicknames[socket.id] || 'Anónimo';
 
@@ -102,7 +103,7 @@ io.on('connection', (socket) => {
                     break;
                 case '/dado':
                     const dado = Math.floor(Math.random() * 6) + 1;
-                    response = `🎲 Tiraste el dado y salió: ${dado} ${'⚀⚁⚂⚃⚄⚅'.split('')[dado-1]}`;
+                    response = `🎲 Tiraste el dado y salió: ${dado} ${'⚀⚁⚂⚃⚄⚅'.split('')[dado - 1]}`;
                     break;
                 case '/fiesta':
                     response = '🎊🎉🎈 ¡FIESTA! 🎈🎉🎊\n¡Todos a bailar! 💃🕺\n┏(＾0＾)┛┗(＾0＾)┓';
@@ -132,7 +133,7 @@ io.on('connection', (socket) => {
         const nickname = nicknames[socket.id] || 'Un usuario';
         delete nicknames[socket.id];
         connectedUsers--;
-        
+
         if (typingUsers.has(nickname)) {
             typingUsers.delete(nickname);
             io.emit('userStopTyping');
@@ -142,7 +143,8 @@ io.on('connection', (socket) => {
             type: 'system',
             text: `🚪 ${nickname} ha salido del chat`
         });
-        
+
+        emitUserList();
         io.emit('updateUsers', connectedUsers);
     });
 });

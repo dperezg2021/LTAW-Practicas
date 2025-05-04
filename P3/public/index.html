@@ -21,14 +21,21 @@
             <button onclick="setNickname()">Confirmar</button>
         </div>
 
-        <div id="chat"></div>
+        <!-- Lista de usuarios conectados -->
+        <div id="user-list-container" style="display: none;">
+            <strong>Usuarios conectados:</strong>
+            <ul id="user-list"></ul>
+        </div>
+
+        <div id="chat" style="display: none;"></div>
         
-        <div class="input-container">
+        <div class="input-container" style="display: none;">
             <input id="message" placeholder="Escribe un mensaje..." autocomplete="off" />
             <button onclick="sendMessage()">
                 <i class="fas fa-paper-plane"></i> Enviar
             </button>
         </div>
+
         <div id="typing-status"></div>
     </div>
 
@@ -41,23 +48,26 @@
         const nicknameContainer = document.getElementById('nickname-container');
         const typingStatus = document.getElementById('typing-status');
         const onlineUsersElement = document.getElementById('online-users');
+        const userListElement = document.getElementById('user-list');
+        const userListContainer = document.getElementById('user-list-container');
+        const inputContainer = document.querySelector('.input-container');
         let userNickname = '';
         let typingTimeout;
 
-        // Enviar el nickname al servidor
         function setNickname() {
             const nickname = nicknameInput.value.trim();
             if (nickname) {
                 socket.emit('setNickname', nickname);
-                userNickname = nickname;  // Guardar el nickname del usuario
-                nicknameContainer.style.display = 'none'; // Ocultar el formulario de nickname
-                chat.style.display = 'block'; // Mostrar la sección del chat
+                userNickname = nickname;
+                nicknameContainer.style.display = 'none';
+                chat.style.display = 'block';
+                inputContainer.style.display = 'flex';
+                userListContainer.style.display = 'block';
             } else {
                 alert('Por favor, ingresa un nickname.');
             }
         }
 
-        // Enviar mensaje al servidor
         function sendMessage() {
             const msg = input.value.trim();
             if (msg) {
@@ -68,7 +78,6 @@
             }
         }
 
-        // Manejar cuando el usuario está escribiendo
         input.addEventListener('input', () => {
             if (input.value.trim()) {
                 socket.emit('typing');
@@ -85,19 +94,24 @@
             const messageDiv = document.createElement('div');
             messageDiv.className = 'message';
 
-            // Si el mensaje fue enviado por el propio usuario, lo alineamos a la derecha
             if (msg.sender === userNickname) {
-                messageDiv.classList.add('message-outgoing');  // Mensaje enviado por el cliente
+                messageDiv.classList.add('message-outgoing');
             } else {
-                messageDiv.classList.add('message-incoming');  // Mensaje recibido de otro usuario
+                messageDiv.classList.add('message-incoming');
+                const senderName = document.createElement('div');
+                senderName.textContent = msg.sender || 'Server';
+                senderName.className = 'sender-name';
+                messageDiv.appendChild(senderName);
             }
 
-            messageDiv.innerHTML = msg.text || msg;
+            const messageText = document.createElement('div');
+            messageText.textContent = msg.text || msg;
+            messageDiv.appendChild(messageText);
+
             chat.appendChild(messageDiv);
             chat.scrollTop = chat.scrollHeight;
         });
 
-        // Mostrar cuando alguien está escribiendo
         socket.on('userTyping', (nickname) => {
             typingStatus.textContent = `${nickname} está escribiendo...`;
             setTimeout(() => {
@@ -111,12 +125,19 @@
             typingStatus.textContent = '';
         });
 
-        // Actualizar contador de usuarios conectados
         socket.on('updateUsers', (count) => {
             onlineUsersElement.textContent = `Usuarios: ${count}`;
         });
 
-        // Auto-focus al cargar
+        socket.on('userList', (users) => {
+            userListElement.innerHTML = '';
+            users.forEach(user => {
+                const li = document.createElement('li');
+                li.textContent = user;
+                userListElement.appendChild(li);
+            });
+        });
+
         window.addEventListener('load', () => {
             nicknameInput.focus();
         });

@@ -15,7 +15,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: 80vh;
     background-image: url('/fondorec.jpeg');
     background-size: cover;
     background-repeat: no-repeat;
@@ -44,6 +44,14 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+/* Nuevo contenedor flexible para chat y lista de usuarios */
+.chat-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow: hidden;
 }
 
 #chat {
@@ -231,7 +239,7 @@ button:hover {
     background-color: var(--pastel-green);
     transform: translateY(-2px);
 }
-/* Añade estos estilos */
+
 .chat-info {
     background-color: var(--pastel-green-dark);
     padding: 8px 20px;
@@ -241,12 +249,14 @@ button:hover {
     color: var(--text-dark);
 }
 
+/* Lista de usuarios modificada */
 #user-list-container {
     background-color: white;
     padding: 15px;
     border-bottom: 1px solid #e9ecef;
     max-height: 150px;
     overflow-y: auto;
+    flex-shrink: 0; /* Evita que se encoja */
 }
 
 #user-list-container h3 {
@@ -273,4 +283,11 @@ button:hover {
 #typing-status {
     font-style: italic;
     color: #6c757d;
+}
+
+.sender-name {
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-bottom: 4px;
+    color: #495057;
 }
