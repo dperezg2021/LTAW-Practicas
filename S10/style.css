@@ -10,3 +10,39 @@ h1 {
       border: 2px solid lightblue;
       padding: 10px;
   }
+  h1 {
+    width: 93%;
+    padding: 20px;
+    background-color: lightgreen;
+    border-radius: 10px;
+    text-align: center;
+  }
+
+.blue {
+    color: blue;
+}
+
+  #display {
+      border: 2px solid lightblue;
+      padding: 10px;
+  }
+  h1 {
+    width: 93%;
+    padding: 20px;
+    background-color: lightgreen;
+    border-radius: 10px;
+    text-align: center;
+  }
+
+.blue {
+    color: blue;
+}
+
+.red {
+  color: red;
+}
+
+  #display {
+      border: 2px solid lightblue;
+      padding: 10px;
+  }
