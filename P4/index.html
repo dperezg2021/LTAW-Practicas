@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Web</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" href="/chat.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <i class="fas fa-comment-dots"></i>
+            <span>Chat Web</span>
+            <div id="online-users">Usuarios: 0</div>
+        </div>
+
+        <div id="nickname-container">
+            <label for="nickname">Ingresa tu nickname:</label>
+            <input type="text" id="nickname" placeholder="Tu nickname" autocomplete="off" />
+            <button onclick="setNickname()">Confirmar</button>
+        </div>
+
+        <!-- Lista de usuarios conectados -->
+        <div id="user-list-container" style="display: none;">
+            <strong>Usuarios conectados:</strong>
+            <ul id="user-list"></ul>
+        </div>
+
+        <div id="chat" style="display: none;"></div>
+        
+        <div class="input-container" style="display: none;">
+            <input id="message" placeholder="Escribe un mensaje..." autocomplete="off" />
+            <button onclick="sendMessage()">
+                <i class="fas fa-paper-plane"></i> Enviar
+            </button>
+        </div>
+
+        <div id="typing-status"></div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const chat = document.getElementById('chat');
+        const input = document.getElementById('message');
+        const nicknameInput = document.getElementById('nickname');
+        const nicknameContainer = document.getElementById('nickname-container');
+        const typingStatus = document.getElementById('typing-status');
+        const onlineUsersElement = document.getElementById('online-users');
+        const userListElement = document.getElementById('user-list');
+        const userListContainer = document.getElementById('user-list-container');
+        const inputContainer = document.querySelector('.input-container');
+        let userNickname = '';
+        let typingTimeout;
+
+        function setNickname() {
+            const nickname = nicknameInput.value.trim();
+            if (nickname) {
+                socket.emit('setNickname', nickname);
+                userNickname = nickname;
+                nicknameContainer.style.display = 'none';
+                chat.style.display = 'block';
+                inputContainer.style.display = 'flex';
+                userListContainer.style.display = 'block';
+            } else {
+                alert('Por favor, ingresa un nickname.');
+            }
+        }
+
+        function sendMessage() {
+            const msg = input.value.trim();
+            if (msg) {
+                socket.emit('chatMessage', msg);
+                input.value = '';
+                input.focus();
+                socket.emit('stopTyping');
+            }
+        }
+
+        input.addEventListener('input', () => {
+            if (input.value.trim()) {
+                socket.emit('typing');
+                clearTimeout(typingTimeout);
+                typingTimeout = setTimeout(() => {
+                    socket.emit('stopTyping');
+                }, 2000);
+            } else {
+                socket.emit('stopTyping');
+            }
+        });
+
+        socket.on('message', (msg) => {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message';
+
+            if (msg.sender === userNickname) {
+                messageDiv.classList.add('message-outgoing');
+            } else {
+                messageDiv.classList.add('message-incoming');
+                const senderName = document.createElement('div');
+                senderName.textContent = msg.sender || 'Server';
+                senderName.className = 'sender-name';
+                messageDiv.appendChild(senderName);
+            }
+
+            const messageText = document.createElement('div');
+            messageText.textContent = msg.text || msg;
+            messageDiv.appendChild(messageText);
+
+            chat.appendChild(messageDiv);
+            chat.scrollTop = chat.scrollHeight;
+        });
+
+        socket.on('userTyping', (nickname) => {
+            typingStatus.textContent = `${nickname} está escribiendo...`;
+            setTimeout(() => {
+                if (typingStatus.textContent === `${nickname} está escribiendo...`) {
+                    typingStatus.textContent = '';
+                }
+            }, 3000);
+        });
+
+        socket.on('userStopTyping', () => {
+            typingStatus.textContent = '';
+        });
+
+        socket.on('updateUsers', (count) => {
+            onlineUsersElement.textContent = `Usuarios: ${count}`;
+        });
+
+        socket.on('userList', (users) => {
+            userListElement.innerHTML = '';
+            users.forEach(user => {
+                const li = document.createElement('li');
+                li.textContent = user;
+                userListElement.appendChild(li);
+            });
+        });
+
+        window.addEventListener('load', () => {
+            nicknameInput.focus();
+        });
+
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+</html>
