@@ -25,21 +25,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const products = await fetchProducts();
         const lowerQuery = query.toLowerCase();
         
-        
         return products.filter(product => 
             product.nombre.toLowerCase().includes(lowerQuery) ||
             product.artista.toLowerCase().includes(lowerQuery)
         )
-            .map(product => ({
-                id: product.id,
-                nombre: product.nombre,
-                artista: product.artista,
-                url: `producto.html?id=${product.id}`,
-                imagen: `MEDIA/${product.imagen}`
-            }));
+        .map(product => ({
+            id: product.id,
+            nombre: product.nombre,
+            artista: product.artista,
+            url: `producto.html?id=${product.id}`,
+            //imagen: `MEDIA/${product.imagen}`
+        }));
     }
 
-    // Función para mostrar sugerencias
+    // Función para mostrar sugerencias (modificada)
     function displaySuggestions(suggestions) {
         searchSuggestions.innerHTML = '';
         
@@ -54,10 +53,17 @@ document.addEventListener('DOMContentLoaded', function() {
         
         suggestions.forEach(product => {
             const li = document.createElement('li');
+            li.className = 'suggestion-item'; // Clase para estilizar
+            
             li.innerHTML = `
-                <a href="${product.url}" class="suggestion-item">
-                    <img src="${product.imagen}" alt="${product.nombre}" class="suggestion-img">
-                    <span>${product.nombre} - ${product.artista}</span>
+                <a href="${product.url}" class="suggestion-link">
+                    <div class="suggestion-content">
+                        <img src="${product.imagen}" alt="${product.nombre}" class="suggestion-img">
+                        <div class="suggestion-text">
+                            <div class="suggestion-title">${product.nombre}</div>
+                            <div class="suggestion-artist">${product.artista}</div>
+                        </div>
+                    </div>
                 </a>
             `;
             searchSuggestions.appendChild(li);

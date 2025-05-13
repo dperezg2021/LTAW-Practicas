@@ -13,6 +13,7 @@
             <img src="MEDIA/Logovyn.png" alt="Logo vinilo" class="logo">
         </a>
         <h1 id="producto-titulo">Cargando producto...</h1>
+        
         <div id="search-container">
             <div id="no-results-message" class="hidden">Producto no encontrado.</div>
             <input type="text" id="search-input" placeholder="Buscar un producto..." />
@@ -22,15 +23,19 @@
         
         <div id="user-info">
             <a href="login.html" id="login-btn">Iniciar Sesión</a>
-            <p id="usuario-conectado" style="display: none;">Conectado como: <span id="user-name"></span> | <a href="#" id="logout-btn">Cerrar Sesión</a></p>
+            <p id="usuario-conectado" style="display: none;">
+                Conectado como: <span id="user-name"></span> | 
+                <a href="#" id="logout-btn">Cerrar Sesión</a>
+            </p>
         </div>
+        
         <a href="carrito.html">
             <img src="MEDIA/carrito-de-compras.png" alt="Logo carrito" class="carrito">
         </a>
     </header>
 
     <main class="detalle-vinilo" id="producto-container">
-        <!-- Contenido dinámico se insertará aquí -->
+        <!-- Contenido dinámico se cargará aquí -->
     </main>
 
     <script>
@@ -47,7 +52,16 @@
                 const data = await response.json();
                 const producto = data.productos.find(p => p.id == productId);
 
-                if (!producto) throw new Error('Producto no encontrado');
+                if (!producto) {
+                    document.getElementById('producto-container').innerHTML = `
+                        <div class="error-producto">
+                            <h2>Producto no encontrado</h2>
+                            <p>El producto con ID ${productId} no existe en nuestra base de datos.</p>
+                            <a href="index.html">Volver a la tienda</a>
+                        </div>
+                    `;
+                    return;
+                }
 
                 // Actualizar título de la página
                 document.title = producto.nombre + " - Vinilos Shop";
@@ -88,16 +102,56 @@
 
                 document.getElementById('producto-container').innerHTML = productoHTML;
                 
-                // Inicializar funcionalidad del carrito
-                if (typeof initCarrito === 'function') {
-                    initCarrito();
+                // Configurar el evento del botón de añadir al carrito
+                const addToCartBtn = document.querySelector('.agregar-carrito');
+                const addedMessage = document.getElementById('mensaje-anadido');
+                
+                if (addToCartBtn) {
+                    addToCartBtn.addEventListener('click', function() {
+                        // Verificar si el carrito.js ya está cargado y tiene la función
+                        if (typeof agregarAlCarrito === 'function') {
+                            // Crear un evento artificial para pasar a la función
+                            const event = {
+                                target: this
+                            };
+                            agregarAlCarrito(event);
+                        } else {
+                            // Función de respaldo si carrito.js no está cargado
+                            const nombre = this.getAttribute('data-nombre');
+                            const precio = parseFloat(this.getAttribute('data-precio'));
+                            const stock = parseInt(this.getAttribute('data-stock'));
+                            
+                            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+                            const productoExistente = carrito.find(p => p.nombre === nombre);
+                            
+                            if (productoExistente) {
+                                if (productoExistente.cantidad < stock) {
+                                    productoExistente.cantidad++;
+                                } else {
+                                    alert('No hay más stock disponible.');
+                                    return;
+                                }
+                            } else {
+                                carrito.push({ nombre, precio, cantidad: 1 });
+                            }
+                            
+                            localStorage.setItem('carrito', JSON.stringify(carrito));
+                            
+                            // Mostrar mensaje
+                            addedMessage.style.display = 'block';
+                            setTimeout(() => {
+                                addedMessage.style.display = 'none';
+                            }, 3000);
+                        }
+                    });
                 }
+
             } catch (error) {
                 console.error('Error:', error);
                 document.getElementById('producto-container').innerHTML = `
                     <div class="error-producto">
-                        <h2>${error.message}</h2>
-                        <p>Lo sentimos, no pudimos cargar el producto.</p>
+                        <h2>Error al cargar el producto</h2>
+                        <p>${error.message}</p>
                         <a href="index.html">Volver a la tienda</a>
                     </div>
                 `;
